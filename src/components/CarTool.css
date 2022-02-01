@@ -1,0 +1,29 @@
+#car-tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#car-tool table {
+    border: 2px solid black;
+    background-color: antiquewhite;
+    width: 80%;
+    font-size: larger;
+}
+
+#car-tool tr, 
+#car-tool th, 
+#car-tool td {
+    border: 1px solid darkblue;
+    padding: 5px;
+}
+
+#car-tool th {
+    font-weight: 800;
+    border-bottom: 2px solid darkblue;
+}
+
+#car-tool th,
+#car-tool tbody tr:nth-child(even){
+    background-color:powderblue;
+}
