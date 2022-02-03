@@ -1,3 +1,5 @@
+import { carRowPropType, carTableColumnsDefType } from '../propTypes/car'
+
 export const CarViewRow = ({ car, tableColumns }) => (
     <tr>
         {tableColumns.map(
@@ -8,3 +10,8 @@ export const CarViewRow = ({ car, tableColumns }) => (
         )}
     </tr>
 )
+
+CarViewRow.propTypes = {
+    car: carRowPropType.isRequired,
+    tableColumns: carTableColumnsDefType.isRequired
+}

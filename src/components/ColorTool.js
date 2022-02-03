@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { newIdFor } from "../util"
 import { ColorForm } from "./ColorForm"
 import { ColorList } from "./ColorList"
 import { ToolHeader } from "./ToolHeader"
@@ -10,7 +11,7 @@ export const ColorTool = (props) => {
         ...colors,
         {
             ...color,
-            id: Math.max(...colors.map(c => c.id), 0) + 1
+            id: newIdFor(colors)
         }
     ])
 
@@ -22,3 +23,7 @@ export const ColorTool = (props) => {
         </>
     )
 }
+
+// ColorTool.propTypes = {
+//     // colors:
+// }

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { useState } from "react"
 
 export const ColorForm = ({ onSubmitColor, buttonText }) => {
@@ -36,4 +38,9 @@ export const ColorForm = ({ onSubmitColor, buttonText }) => {
             </button>
         </form>
     )
+}
+
+ColorForm.propTypes = {
+    onSubmitColor: PropTypes.func.isRequired,
+    buttonText: PropTypes.string.isRequired
 }

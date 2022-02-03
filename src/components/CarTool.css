@@ -27,3 +27,12 @@
 #car-tool tbody tr:nth-child(even){
     background-color:powderblue;
 }
+
+#car-tool .display-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#car-tool form .errors {
+    color: red;
+}
