@@ -1,23 +1,21 @@
 import PropTypes from 'prop-types'
 
-import { useState } from "react"
+import { useForm } from '../hooks/useForm'
 
 export const ColorForm = ({ onSubmitColor, buttonText }) => {
     const initial = {
         name: '', hexcode: '',
     }
-    const [colorForm, setColorForm] = useState(initial)
 
-    const change = ({ target: { name, value } }) => {
-        setColorForm({
-            ...colorForm,
-            [name]: value
-        })
-    }
+    const {
+        form: colorForm,
+        change: setColorForm,
+        resetForm
+    } = useForm({ ...initial })
 
     const submit = () => {
         onSubmitColor({ ...colorForm })
-        setColorForm(initial)
+        resetForm(initial)
     }
 
     const { name, hexcode } = colorForm
@@ -25,12 +23,12 @@ export const ColorForm = ({ onSubmitColor, buttonText }) => {
         <form>
             <label>
                 Name:
-                <input type="text" name="name" value={name} onChange={change} />
+                <input type="text" name="name" value={name} onChange={setColorForm} />
             </label>
 
             <label>
                 Hexcode:
-                <input type="text" name="hexcode" value={hexcode} onChange={change} />
+                <input type="text" name="hexcode" value={hexcode} onChange={setColorForm} />
             </label>
 
             <button type="button" onClick={submit}>

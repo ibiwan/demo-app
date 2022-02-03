@@ -1,19 +1,13 @@
-import { useState } from "react"
+import { useObjList } from "../hooks/useObjList"
 import { newIdFor } from "../util"
 import { ColorForm } from "./ColorForm"
 import { ColorList } from "./ColorList"
 import { ToolHeader } from "./ToolHeader"
 
 export const ColorTool = (props) => {
-    const [colors, setColors] = useState([...props.colors])
+    const [colors, addColorToList] = useObjList([...props.colors])
 
-    const addColor = color => setColors([
-        ...colors,
-        {
-            ...color,
-            id: newIdFor(colors)
-        }
-    ])
+    const addColor = data => addColorToList({ ...data, id: newIdFor(colors) })
 
     return (
         <>
@@ -23,7 +17,3 @@ export const ColorTool = (props) => {
         </>
     )
 }
-
-// ColorTool.propTypes = {
-//     // colors:
-// }

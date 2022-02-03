@@ -1,73 +1,48 @@
-import { useState } from "react"
 
 import { carsPropType } from "../propTypes/car"
-import { newIdFor } from "../util"
 import { CarForm } from "./CarForm"
 import { CarTable } from "./CarTable"
 import { ToolHeader } from "./ToolHeader"
 
 import "./CarTool.css"
+import { useCarToolStore } from "../hooks/useCarToolStore"
 
 export const CarTool = ({ cars }) => {
-    const defaultMode = { mode: 'default', editCarId: null }
-    const [mode, setMode] = useState({ ...defaultMode })
-    const [carsData, setCarsData] = useState([...cars])
-
-    const addCar = car => {
-        setMode({ mode: 'default', editCarId: null })
-        setCarsData([
-            ...carsData,
-            {
-                ...car,
-                id: newIdFor(carsData)
-            }
-        ])
-    }
-
-    const deleteCar = car => {
-        setCarsData(
-            carsData.filter(c => c.id !== car.id)
-
-        )
-        setMode({ ...defaultMode })
-    }
-
-    const editCar = (car,) => {
-        setCarsData([...carsData].map(c => {
-            if (c.id !== car.id) { return c }
-            return { ...c, ...car }
-        })
-        )
-        setMode({ ...defaultMode })
-    }
+    const {
+        inAddMode, editModeId,
+        setAddMode, setEditMode, resetMode,
+        carsList, addCar, deleteCar, editCar
+    } = useCarToolStore([...cars])
 
     return (
         <div id="car-tool">
             <ToolHeader toolName="Car Tool" />
             <CarTable
-                cars={carsData}
+                cars={carsList}
+
                 deleteButtonText="Delete Car"
                 onDeleteCar={deleteCar}
-                editCarId={mode.editCarId}
+
+                editCarId={editModeId}
                 editButtonText="Edit Car"
-                onSelectEditCar={id => setMode({ mode: 'edit', editCarId: id })}
+                onSelectEditCar={id => setEditMode(id)}
                 saveEditButtonText="Save Changes"
                 onSubmitEditCar={editCar}
+
                 cancelButtonText="Cancel"
-                onCancel={() => setMode({ ...defaultMode })}
+                onCancel={resetMode}
             />
-            {mode.mode !== 'add' && <button
+            {!inAddMode && <button
                 type="button"
-                onClick={
-                    () => setMode({ mode: 'add' })
-                }>
+                onClick={setAddMode}>
                 Add Car
             </button>}
-            {mode.mode === 'add' && <CarForm
+            {inAddMode && <CarForm
                 addButtonText="Add Car"
                 onSubmitCar={addCar}
+
                 cancelButtonText="Cancel"
-                onCancel={() => setMode({ ...defaultMode })}
+                onCancel={resetMode}
             />}
         </div >
     )

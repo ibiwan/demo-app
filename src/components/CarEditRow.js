@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState } from "react"
+import { useForm } from '../hooks/useForm'
 import { carRowPropType, carTableColumnsDefType } from "../propTypes/car"
 
 export const CarEditRow = ({
@@ -11,16 +11,12 @@ export const CarEditRow = ({
     onCancel,
 }) => {
     const { actions, ...slimCar } = car
-    const [changesMade, setChangesMade] = useState(false)
-    const [carForm, setCarForm] = useState(slimCar)
 
-    const change = ({ target: { name, value } }) => {
-        setChangesMade(true)
-        setCarForm({
-            ...carForm,
-            [name]: value,
-        })
-    }
+    const {
+        form: carForm,
+        change: setCarForm,
+        changesMade
+    } = useForm({ ...slimCar })
 
     const submit = () => {
         onSubmitEditCar({ ...carForm })
@@ -53,7 +49,7 @@ export const CarEditRow = ({
                         type="text"
                         name={key}
                         value={carForm[key]}
-                        onChange={change}
+                        onChange={setCarForm}
                         size={10}
                     />
                 }
