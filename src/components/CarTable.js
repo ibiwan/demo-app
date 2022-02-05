@@ -36,9 +36,13 @@ export const CarTable = ({
     cancelButtonText,
     onCancel,
 }) => {
+    console.log("render CarTable")
+
     const [sortMode, setSortMode] = useState({ field: null, dir: 1 })
 
     const reSort = (key) => {
+        console.log("sorting cars")
+        
         if (tableColumns.find(c => c.key === key).sortable === false) {
             return
         }

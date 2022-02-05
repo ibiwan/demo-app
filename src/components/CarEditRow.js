@@ -10,6 +10,8 @@ export const CarEditRow = ({
     cancelButtonText,
     onCancel,
 }) => {
+    console.log("render CarEditRow")
+    
     const { actions, ...slimCar } = car
 
     const {

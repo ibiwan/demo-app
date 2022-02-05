@@ -1,11 +1,11 @@
-import { useObjList } from "../hooks/useObjList"
+import { useColorTool } from "../hooks/useColorTool"
 import { newIdFor } from "../util"
 import { ColorForm } from "./ColorForm"
 import { ColorList } from "./ColorList"
 import { ToolHeader } from "./ToolHeader"
 
-export const ColorTool = (props) => {
-    const [colors, addColorToList] = useObjList([...props.colors])
+export const ColorTool = () => {
+    const [colors, addColorToList] = useColorTool()
 
     const addColor = data => addColorToList({ ...data, id: newIdFor(colors) })
 

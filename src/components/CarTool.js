@@ -1,18 +1,19 @@
 
-import { carsPropType } from "../propTypes/car"
 import { CarForm } from "./CarForm"
 import { CarTable } from "./CarTable"
 import { ToolHeader } from "./ToolHeader"
 
 import "./CarTool.css"
-import { useCarToolStore } from "../hooks/useCarToolStore"
+import { useCarTool } from "../hooks/useCarTool"
 
-export const CarTool = ({ cars }) => {
+export const CarTool = () => {
+    console.log("render CarTool")
+
     const {
         inAddMode, editModeId,
         setAddMode, setEditMode, resetMode,
         carsList, addCar, deleteCar, editCar
-    } = useCarToolStore([...cars])
+    } = useCarTool()
 
     return (
         <div id="car-tool">
@@ -46,8 +47,4 @@ export const CarTool = ({ cars }) => {
             />}
         </div >
     )
-}
-
-CarTool.propTypes = {
-    cars: carsPropType.isRequired
 }

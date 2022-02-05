@@ -1,15 +1,18 @@
 import { carRowPropType, carTableColumnsDefType } from '../propTypes/car'
 
-export const CarViewRow = ({ car, tableColumns }) => (
-    <tr>
-        {tableColumns.map(
-            ({ key, fmt = v => v }) =>
-                <td key={`${car.id}.${key}`}>
-                    {fmt(car[key])}
-                </td>
-        )}
-    </tr>
-)
+export const CarViewRow = ({ car, tableColumns }) => {
+    console.log("render CarViewRow")
+    return (
+        <tr>
+            {tableColumns.map(
+                ({ key, fmt = v => v }) =>
+                    <td key={`${car.id}.${key}`}>
+                        {fmt(car[key])}
+                    </td>
+            )}
+        </tr>
+    )
+}
 
 CarViewRow.propTypes = {
     car: carRowPropType.isRequired,

@@ -9,6 +9,8 @@ export const CarForm = ({
     cancelButtonText,
     onCancel,
 }) => {
+    console.log("render CarForm")
+
     const init = {
         make: '',
         model: '',
@@ -23,6 +25,7 @@ export const CarForm = ({
         price: ruleNumeric,
         year: ruleNumeric,
     }
+    
     const {
         form: carForm,
         change: setCarForm,
