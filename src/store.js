@@ -3,6 +3,8 @@ import { calcReducer } from "./features/calcTool/calcSlice";
 
 export const store = configureStore({
     reducer: {
-        calcToolSlice: calcReducer
+        calcToolSlice: calcReducer,
+        // carToolSlice: carReducer,
+        // colorToolSlice: colorReducer,
     },
 })

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import { upperFirst } from "../util"
-import { useForm } from "../hooks/useForm"
-import { ruleExists, ruleNumeric } from "../hooks/useValidations"
+import { useForm } from '../../../hooks/useForm'
+import { upperFirst } from '../../../util'
+import { carFormValidationRules, emptyCarForm } from '../carToolConfig'
 
 export const CarForm = ({
     onSubmitCar,
@@ -9,31 +9,14 @@ export const CarForm = ({
     cancelButtonText,
     onCancel,
 }) => {
-    console.log("render CarForm")
-
-    const init = {
-        make: '',
-        model: '',
-        year: '',
-        color: '',
-        price: '',
-    }
-    const validationRules = {
-        make: ruleExists,
-        model: ruleExists,
-        color: ruleExists,
-        price: ruleNumeric,
-        year: ruleNumeric,
-    }
-    
     const {
         form: carForm,
         change: setCarForm,
         errors,
         validate,
     } = useForm(
-        { ...init },
-        validationRules
+        { ...emptyCarForm },
+        carFormValidationRules
     )
 
     const submit = () => {
@@ -52,7 +35,7 @@ export const CarForm = ({
 
     return (
         <form style={{ display: 'flex', flexDirection: 'column' }}>
-            {Object.keys(init).map(k => {
+            {Object.keys(emptyCarForm).map(k => {
                 return (
                     <label key={k}>
                         {upperFirst(k)}

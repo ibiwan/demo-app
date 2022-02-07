@@ -41,15 +41,17 @@ const calcSlice = createSlice({
 
 export const { clear, setError, deleteHistoryItem } = calcSlice.actions
 
-export const selectResult = state => state.calcToolSlice.history.reduce((acc, { op, val }) => {
-    switch (op) {
-        case add.type: return acc + Number(val);
-        case subtract.type: return acc - Number(val);
-        case multiply.type: return acc * Number(val);
-        case divide.type: return acc / Number(val);
-        default: return acc;
-    }
-}, 0)
+export const selectResult = state =>
+    state.calcToolSlice.history.reduce((acc, { op, val }) => {
+        switch (op) {
+            case add.type: return acc + Number(val);
+            case subtract.type: return acc - Number(val);
+            case multiply.type: return acc * Number(val);
+            case divide.type: return acc / Number(val);
+            default: return acc;
+        }
+    }, 0)
+
 export const selectError = state => state.calcToolSlice.error
 export const selectHistory = state => state.calcToolSlice.history
 

@@ -3,15 +3,15 @@ import { Provider } from 'react-redux'
 
 import { Home } from './components/Home'
 import { ColorTool } from './components/ColorTool'
-import { CarTool } from './components/CarTool'
 
 import { Layout } from './components/Layout'
 
 import "./reset.css"
 import { ColorToolStoreProvider } from './contexts/colorToolStoreContext'
-import { CarToolStoreProvider } from './contexts/carToolStoreContext'
+import { CarToolStoreProvider } from './features/carTool/carToolStore'
 import { CalcTool } from './features/calcTool/CalcTool'
 import { store } from './store'
+import { CarTool } from './features/carTool/components/CarTool'
 
 export const App = () => {
   return (

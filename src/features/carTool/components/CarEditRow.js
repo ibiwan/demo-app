@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import { useForm } from '../hooks/useForm'
-import { carRowPropType, carTableColumnsDefType } from "../propTypes/car"
+import { useForm } from '../../../hooks/useForm'
+import { carRowPropType, carTableColumnsDefType } from '../../../propTypes/car'
 
 export const CarEditRow = ({
     car,

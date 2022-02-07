@@ -9,7 +9,19 @@ export const CalcTool = () => {
     } = useCalcTool()
 
     const [value, setValue] = useState(0)
+
+    // const inputChange = useCallback(e => setValue(e.target.value),[])
     const inputChange = e => setValue(e.target.value)
+
+    // if passing inputChange to some react 
+    // component that internally uses useMemo, 
+    // use useCallback so we're sending a consistent 
+    // function object
+
+    // if usages like these exist somewhere, 
+    // we'll want safeDivide to be consistent
+    // const blah1 = useMemo(() => {/*---*/ }, [safeDivide])
+    // const blah2 = useCallback(() => {/*---*/ }, [safeDivide])
 
     return (<>
         <input type="text" value={value} onChange={inputChange} />
@@ -21,7 +33,7 @@ export const CalcTool = () => {
             <button type="button" onClick={() => multiply(value)}>Multiply</button>
             <button type="button" onClick={() => safeDivide(value)}>Divide</button>
             &nbsp;
-            <button type="clear" onClick={() =>{ clear(); setValue(0)}}>Clear</button>
+            <button type="clear" onClick={() => { clear(); setValue(0) }}>Clear</button>
         </div>
         {history.map(({ id, op, val }) => (
             <div key={id}>

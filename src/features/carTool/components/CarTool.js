@@ -1,30 +1,31 @@
 
 import { CarForm } from "./CarForm"
 import { CarTable } from "./CarTable"
-import { ToolHeader } from "./ToolHeader"
 
 import "./CarTool.css"
-import { useCarTool } from "../hooks/useCarTool"
+import { useCarTool } from "../useCarTool"
+import { ToolHeader } from "../../../components/ToolHeader"
 
 export const CarTool = () => {
     console.log("render CarTool")
 
     const {
-        inAddMode, editModeId,
+        cars,
+        inAddMode, editCarId,
         setAddMode, setEditMode, resetMode,
-        carsList, addCar, deleteCar, editCar
+        addCar, deleteCar, editCar
     } = useCarTool()
 
     return (
         <div id="car-tool">
             <ToolHeader toolName="Car Tool" />
             <CarTable
-                cars={carsList}
+                cars={cars}
 
                 deleteButtonText="Delete Car"
                 onDeleteCar={deleteCar}
 
-                editCarId={editModeId}
+                editCarId={editCarId}
                 editButtonText="Edit Car"
                 onSelectEditCar={id => setEditMode(id)}
                 saveEditButtonText="Save Changes"
