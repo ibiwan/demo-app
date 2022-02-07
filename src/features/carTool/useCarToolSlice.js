@@ -1,10 +1,10 @@
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 import {
     setMode, resetMode,
     addCar, editCar, deleteCar,
     selectCars, selectEditCarId,
-    selectInAddMode, 
+    selectInAddMode,
     MODE_ADD, MODE_EDIT
 } from './carToolSlice'
 import { bindActionCreators } from "@reduxjs/toolkit"
@@ -17,18 +17,36 @@ export const useCarToolSlice = () => {
 
     const dispatch = useDispatch()
     const boundActions = useMemo(() => bindActionCreators({
-        setAddMode, setEditMode, resetMode,
-        addCar, editCar, deleteCar,
+        setAddMode, setEditMode,
+        resetMode,
     }, dispatch), [dispatch])
 
     const cars = useSelector(selectCars)
     const inAddMode = useSelector(selectInAddMode)
     const editCarId = useSelector(selectEditCarId)
 
+    const submitAddCar = useCallback((data) => {
+        dispatch(addCar(data))
+        dispatch(resetMode())
+    }, [dispatch])
+
+    const submitEditCar = useCallback((data) => {
+        dispatch(editCar({ id: editCarId, data }))
+        dispatch(resetMode())
+    }, [dispatch, editCarId])
+
+    const submitDeleteCar = useCallback(id => {
+        dispatch(deleteCar(id))
+        dispatch(resetMode())
+    }, [dispatch])
+
     return {
         ...boundActions,
         cars,
         inAddMode,
-        editCarId
+        editCarId,
+        addCar: submitAddCar,
+        editCar: submitEditCar,
+        deleteCar: submitDeleteCar,
     }
 }

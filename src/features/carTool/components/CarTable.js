@@ -43,7 +43,7 @@ export const CarTable = ({
 
     const reSort = (key) => {
         console.log("sorting cars")
-        
+
         if (tableColumns.find(c => c.key === key).sortable === false) {
             return
         }
@@ -125,7 +125,7 @@ export const CarTable = ({
                             saveEditButtonText={saveEditButtonText}
                             onSubmitEditCar={onSubmitEditCar}
                             cancelButtonText={cancelButtonText}
-                        onCancel={onCancel}
+                            onCancel={onCancel}
                         /> :
                         < CarViewRow
                             key={car.id}

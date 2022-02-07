@@ -28,26 +28,22 @@ const carToolSlice = createSlice({
                 ...car,
                 id: nanoid()
             })
-            stateSlice.mode = defaultMode
         },
-        editCar: (stateSlice, { payload: { id, ...data } }) => {
+        editCar: (stateSlice, { payload, payload: { id, data } }) => {
             const i = stateSlice.cars.findIndex(car => car.id === id)
-            console.log({ id, i, data, car: { ...stateSlice.cars[i] } })
+            console.log({ payload })
             if (i > -1) {
                 stateSlice.cars[i] = {
                     ...data,
                     id,
                 }
             }
-            stateSlice.mode = defaultMode
         },
         deleteCar: (stateSlice, { payload: { id } }) => {
             const i = stateSlice.cars.findIndex(car => car.id === id)
-            console.log({ id, i })
             if (i > -1) {
                 stateSlice.cars.splice(i, 1)
             }
-            stateSlice.mode = defaultMode
         },
     },
 })
