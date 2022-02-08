@@ -1,100 +1,39 @@
-import { useMemo, useState } from "react"
 import PropTypes from 'prop-types'
-
 
 import { CarViewRow } from "./CarViewRow"
 import { carsPropType } from "../../../propTypes/car"
 import { CarEditRow } from "./CarEditRow"
-import { spaceship } from "../../../util"
-
-const nf = new Intl.NumberFormat('en-US')
-
-const tableColumns = [
-    { key: 'id', label: 'Id', editable: false },
-    { key: 'year', label: 'Year', },
-    { key: 'make', label: 'Make' },
-    { key: 'model', label: 'Model[trim]' },
-    { key: 'color', label: 'Color' },
-    {
-        key: 'price', label: 'Price New',
-        fmt: v => `$${nf.format(v)}`
-    },
-    {
-        key: 'actions', label: 'Actions',
-        sortable: false,
-    },
-]
+import { tableColumns } from "../carToolConfig"
+import { CarViewActions } from './CarViewActions'
+import { useCallback } from 'react'
 
 export const CarTable = ({
     cars,
-    deleteButtonText,
+    sortMode,
+    setSortMode,
     onDeleteCar,
-    editButtonText,
     editCarId,
     onSelectEditCar,
     onSubmitEditCar,
-    saveEditButtonText,
-    cancelButtonText,
     onCancel,
 }) => {
-    console.log("render CarTable")
-
-    const [sortMode, setSortMode] = useState({ field: null, dir: 1 })
-
-    const reSort = (key) => {
-        console.log("sorting cars")
-
+    const onColumnClick = (key) => {
         if (tableColumns.find(c => c.key === key).sortable === false) {
+            console.log(`not sortable: ${key}`)
             return
         }
-
-        if (key !== sortMode.field) {
-            setSortMode({
-                field: key,
-                dir: 1,
-            })
-        } else {
-            setSortMode({
-                ...sortMode,
-                dir: -sortMode.dir
-            })
-        }
+        setSortMode(key)
     }
 
-    // avoid recomputing sort when unnecessary
-    const carList = useMemo(() => {
-        const sortedList = [...cars]
-        if (sortMode.field) {
-            // in-place
-            sortedList.sort((car1, car2) => {
-                return sortMode.dir * spaceship(
-                    car1[sortMode.field],
-                    car2[sortMode.field],
-                )
-            })
-        }
-
-        const actions = (c) => {
-            return (<>
-                <button
-                    onClick={() => onDeleteCar(c)}
-                >
-                    {deleteButtonText}
-                </button>
-                <button
-                    onClick={() => onSelectEditCar(c.id)}
-                >
-                    {editButtonText}
-                </button>
-            </>)
-        }
-
-        // add button to actions column while we're here
-        return sortedList.map(c => ({
-            ...c,
-            actions: actions(c),
-        }))
-    }, [cars, sortMode, deleteButtonText, onDeleteCar, editButtonText, onSelectEditCar])
+    const createActions = useCallback((car) => {
+        return (< CarViewActions
+            {...{
+                car,
+                onDeleteCar,
+                onSelectEditCar,
+            }}
+        />)
+    }, [onDeleteCar, onSelectEditCar,])
 
     return (
         <table className="display-table">
@@ -108,7 +47,7 @@ export const CarTable = ({
                         return (
                             <th
                                 key={`${key}`}
-                                onClick={() => reSort(key)}
+                                onClick={() => onColumnClick(key)}
                             >{label + sortSuffix}</th>
                         )
                     }
@@ -116,20 +55,24 @@ export const CarTable = ({
                 </tr>
             </thead>
             <tbody>
-                {carList.map((car) => {
-                    return car.id === editCarId ?
+                {cars.map((car) => {
+                    const isEditRow = car.id === editCarId
+                    const carRow = { ...car }
+                    if (!isEditRow) {
+                        carRow.actions = createActions(car)
+                    }
+
+                    return isEditRow ?
                         <CarEditRow
                             key={`edit:${car.id}`}
-                            car={car}
+                            car={carRow}
                             tableColumns={tableColumns}
-                            saveEditButtonText={saveEditButtonText}
                             onSubmitEditCar={onSubmitEditCar}
-                            cancelButtonText={cancelButtonText}
                             onCancel={onCancel}
                         /> :
-                        < CarViewRow
-                            key={car.id}
-                            car={car}
+                        <CarViewRow
+                            key={`view:${car.id}`}
+                            car={carRow}
                             tableColumns={tableColumns}
                         />
                 }
@@ -141,13 +84,9 @@ export const CarTable = ({
 
 CarTable.propTypes = {
     cars: carsPropType.isRequired,
-    deleteButtonText: PropTypes.string.isRequired,
-    editButtonText: PropTypes.string.isRequired,
     onDeleteCar: PropTypes.func.isRequired,
     editCarId: PropTypes.number,
     onSelectEditCar: PropTypes.func.isRequired,
     onSubmitEditCar: PropTypes.func.isRequired,
-    saveEditButtonText: PropTypes.string.isRequired,
-    cancelButtonText: PropTypes.string.isRequired,
     onCancel: PropTypes.func.isRequired,
 }

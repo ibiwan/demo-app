@@ -11,9 +11,11 @@ export const useForm = (initialForm, validationRules = null) => {
         if (validationRules !== null) {
             validateOne(name, value)
         }
+        console.log({ name, value })
         setForm({
             ...form,
-            [name]: targetType === 'number' ? parseInt(value, 10)
+            [name]: targetType === 'number' ?
+                parseInt(value, 10)
                 : value,
         })
         setChangesMade(true)

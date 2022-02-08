@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
+import { useContext } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import { upperFirst } from '../../../util'
 import { carFormValidationRules, emptyCarForm } from '../carToolConfig'
+import { CarToolStringsContext } from '../carToolStringsContext'
 
 export const CarForm = ({
     onSubmitCar,
-    addButtonText,
-    cancelButtonText,
     onCancel,
 }) => {
+    const { addButtonText, cancelButtonText } = useContext(CarToolStringsContext)
+
     const {
         form: carForm,
         change: setCarForm,
@@ -64,7 +66,5 @@ export const CarForm = ({
 
 CarForm.propTypes = {
     onSubmitCar: PropTypes.func.isRequired,
-    addButtonText: PropTypes.string.isRequired,
-    cancelButtonText: PropTypes.string.isRequired,
     onCancel: PropTypes.func.isRequired,
 }

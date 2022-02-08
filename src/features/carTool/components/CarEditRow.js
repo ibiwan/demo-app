@@ -1,60 +1,57 @@
 import PropTypes from 'prop-types'
+import { useCallback } from 'react'
+
 import { useForm } from '../../../hooks/useForm'
 import { carRowPropType, carTableColumnsDefType } from '../../../propTypes/car'
+import { CarEditActions } from './CarEditActions'
 
 export const CarEditRow = ({
     car,
     tableColumns,
     onSubmitEditCar,
-    saveEditButtonText,
-    cancelButtonText,
     onCancel,
 }) => {
-    console.log("render CarEditRow")
-    
-    const { actions, ...slimCar } = car
+    const { id, ...slimCar } = car
 
     const {
         form: carForm,
         change: setCarForm,
-        changesMade
+        changesMade,
     } = useForm({ ...slimCar })
 
-    const submit = () => {
-        onSubmitEditCar({ ...carForm })
+    const createActions = useCallback(() => (
+        <CarEditActions
+            {...{
+                carForm,
+                changesMade,
+                onSubmitEditCar,
+                onCancel,
+            }}
+        />
+    ), [
+        carForm,
+        changesMade,
+        onSubmitEditCar,
+        onCancel,
+    ])
+
+    const carRow = {
+        ...car,
+        actions: createActions(car),
     }
 
     return (
         <tr>
-            {tableColumns.map(({ key, editable }) => {
-                let content
-                if (editable === false) {
-                    content = carForm[key]
-                } else if (key === 'actions') {
-                    content = <>
-                        <button
-                            type="button"
-                            disabled={!changesMade}
-                            onClick={submit}
-                        >
-                            {saveEditButtonText}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={onCancel}
-                        >
-                            {cancelButtonText}
-                        </button>
-                    </>
-                } else {
-                    content = <input
+            {tableColumns.map(({ key, editable = true }) => {
+                const content = editable ?
+                    <input
                         type="text"
                         name={key}
                         value={carForm[key]}
                         onChange={setCarForm}
                         size={10}
-                    />
-                }
+                    /> :
+                    carRow[key]
                 return (<td key={key}>{content}</td>)
             })}
         </tr>
@@ -65,7 +62,5 @@ CarEditRow.propTypes = {
     car: carRowPropType.isRequired,
     tableColumns: carTableColumnsDefType.isRequired,
     onSubmitEditCar: PropTypes.func.isRequired,
-    saveEditButtonText: PropTypes.string.isRequired,
-    cancelButtonText: PropTypes.string.isRequired,
     onCancel: PropTypes.func.isRequired
 }

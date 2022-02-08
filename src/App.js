@@ -12,6 +12,7 @@ import { CarToolStoreProvider } from './features/carTool/carToolStore'
 import { CalcTool } from './features/calcTool/CalcTool'
 import { store } from './store'
 import { CarTool } from './features/carTool/components/CarTool'
+import { CarToolStringsProvider } from './features/carTool/carToolStringsContext'
 
 export const App = () => {
   return (
@@ -26,7 +27,9 @@ export const App = () => {
           } />
           <Route path='car-tool' element={
             <CarToolStoreProvider>
-              <CarTool />
+              <CarToolStringsProvider>
+                <CarTool />
+              </CarToolStringsProvider>
             </CarToolStoreProvider>
           } />
           <Route path='calc-tool' element={

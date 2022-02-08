@@ -1,7 +1,9 @@
 import { carRowPropType, carTableColumnsDefType } from '../../../propTypes/car'
 
-export const CarViewRow = ({ car, tableColumns }) => {
-    console.log("render CarViewRow")
+export const CarViewRow = ({
+    car,
+    tableColumns,
+}) => {
     return (
         <tr>
             {tableColumns.map(

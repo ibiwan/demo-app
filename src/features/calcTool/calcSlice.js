@@ -1,4 +1,5 @@
-import { createAction, createSlice, nanoid } from '@reduxjs/toolkit'
+import { createAction, createSlice } from '@reduxjs/toolkit'
+import { makeid } from '../../util'
 
 export const add = createAction('add')
 export const subtract = createAction('subtract')
@@ -32,7 +33,7 @@ const calcSlice = createSlice({
         .addMatcher(isValidOp, (stateSlice, action) => {
             stateSlice.error = null
             stateSlice.history.push({
-                id: nanoid(),
+                id: makeid(),
                 op: action.type,
                 val: action.payload,
             })

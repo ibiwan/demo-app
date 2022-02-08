@@ -5,46 +5,44 @@ import { CarTable } from "./CarTable"
 import "./CarTool.css"
 import { useCarTool } from "../useCarTool"
 import { ToolHeader } from "../../../components/ToolHeader"
+import { useContext } from "react"
+import { CarToolStringsContext } from "../carToolStringsContext"
 
 export const CarTool = () => {
-    console.log("render CarTool")
-
     const {
         cars,
         inAddMode, editCarId,
         setAddMode, setEditMode, resetMode,
-        addCar, deleteCar, editCar
+        addCar, deleteCar, editCar,
+        sortMode, setSortMode,
     } = useCarTool()
+
+    const strings = useContext(CarToolStringsContext)
 
     return (
         <div id="car-tool">
             <ToolHeader toolName="Car Tool" />
             <CarTable
                 cars={cars}
-
-                deleteButtonText="Delete Car"
+                sortMode={sortMode}
+                setSortMode={setSortMode}
                 onDeleteCar={deleteCar}
-
                 editCarId={editCarId}
-                editButtonText="Edit Car"
                 onSelectEditCar={id => setEditMode(id)}
-                saveEditButtonText="Save Changes"
                 onSubmitEditCar={editCar}
-
-                cancelButtonText="Cancel"
                 onCancel={resetMode}
+                strings={strings}
             />
             {!inAddMode && <button
                 type="button"
-                onClick={setAddMode}>
-                Add Car
+                onClick={setAddMode}
+            >
+                {strings.addButtonText}
             </button>}
             {inAddMode && <CarForm
-                addButtonText="Add Car"
                 onSubmitCar={addCar}
-
-                cancelButtonText="Cancel"
                 onCancel={resetMode}
+                strings={strings}
             />}
         </div >
     )

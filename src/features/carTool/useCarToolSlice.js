@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react"
 
 import {
-    setMode, resetMode,
+    setMode, resetMode, setSortMode,
     addCar, editCar, deleteCar,
-    selectCars, selectEditCarId,
-    selectInAddMode,
-    MODE_ADD, MODE_EDIT
+    selectSortedCars, selectEditCarId,
+    selectInAddMode, selectSortMode,
+    MODE_ADD, MODE_EDIT,
 } from './carToolSlice'
 import { bindActionCreators } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
@@ -17,13 +17,15 @@ export const useCarToolSlice = () => {
 
     const dispatch = useDispatch()
     const boundActions = useMemo(() => bindActionCreators({
-        setAddMode, setEditMode,
+        setAddMode,
+        setEditMode,
         resetMode,
     }, dispatch), [dispatch])
 
-    const cars = useSelector(selectCars)
+    const cars = useSelector(selectSortedCars)
     const inAddMode = useSelector(selectInAddMode)
     const editCarId = useSelector(selectEditCarId)
+    const sortMode = useSelector(selectSortMode)
 
     const submitAddCar = useCallback((data) => {
         dispatch(addCar(data))
@@ -40,13 +42,30 @@ export const useCarToolSlice = () => {
         dispatch(resetMode())
     }, [dispatch])
 
+    const submitSortMode = useCallback((field) => {
+        if (field === sortMode.field) {
+            dispatch(setSortMode({
+                ...sortMode,
+                dir: -sortMode.dir,
+            }))
+        } else {
+            dispatch(setSortMode({
+                ...sortMode,
+                field,
+                dir: 1,
+            }))
+        }
+    }, [dispatch, sortMode])
+
     return {
         ...boundActions,
         cars,
         inAddMode,
         editCarId,
+        sortMode,
         addCar: submitAddCar,
         editCar: submitEditCar,
         deleteCar: submitDeleteCar,
+        setSortMode: submitSortMode,
     }
 }
