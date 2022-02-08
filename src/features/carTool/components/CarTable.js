@@ -6,6 +6,7 @@ import { CarEditRow } from "./CarEditRow"
 import { tableColumns } from "../carToolConfig"
 import { CarViewActions } from './CarViewActions'
 import { useCallback } from 'react'
+import { CarTableHeader } from './CarTableHeader'
 
 export const CarTable = ({
     cars,
@@ -37,23 +38,13 @@ export const CarTable = ({
 
     return (
         <table className="display-table">
-            <thead>
-                <tr>
-                    {tableColumns.map(({ label, key }) => {
-                        let sortSuffix = ''
-                        if (key === sortMode.field) {
-                            sortSuffix = sortMode.dir > 0 ? ' (asc)' : ' (desc)'
-                        }
-                        return (
-                            <th
-                                key={`${key}`}
-                                onClick={() => onColumnClick(key)}
-                            >{label + sortSuffix}</th>
-                        )
-                    }
-                    )}
-                </tr>
-            </thead>
+            <CarTableHeader
+                {...{
+                    tableColumns,
+                    sortMode,
+                    onColumnClick
+                }}
+            />
             <tbody>
                 {cars.map((car) => {
                     const isEditRow = car.id === editCarId

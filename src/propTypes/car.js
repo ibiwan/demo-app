@@ -16,6 +16,10 @@ export const carsPropType = PropTypes.arrayOf(carPropType)
 
 export const carRowPropType = PropTypes.shape({
     ...carPropTypeBaseShape,
+})
+
+export const carRowPropTypeWithActions = PropTypes.shape({
+    ...carPropTypeBaseShape,
     actions: PropTypes.element.isRequired,
 })
 
