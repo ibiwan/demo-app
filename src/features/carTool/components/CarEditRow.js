@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useCallback } from 'react'
 
 import { useForm } from '../../../hooks/useForm'
-import { carRowPropType, carTableColumnsDefType } from '../../../propTypes/car'
+import { carRowPropType, carTableColumnsDefType } from '../../../shared/propTypes/car'
 import { CarEditActions } from './CarEditActions'
 
 export const CarEditRow = ({

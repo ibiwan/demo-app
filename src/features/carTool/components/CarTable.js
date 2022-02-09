@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 
 import { CarViewRow } from "./CarViewRow"
-import { carsPropType } from "../../../propTypes/car"
 import { CarEditRow } from "./CarEditRow"
 import { tableColumns } from "../carToolConfig"
 import { CarViewActions } from './CarViewActions'
 import { useCallback } from 'react'
 import { CarTableHeader } from './CarTableHeader'
+import { carsPropType } from '../../../shared/propTypes/car'
 
 export const CarTable = ({
     cars,

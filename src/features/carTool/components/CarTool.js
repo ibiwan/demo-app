@@ -13,6 +13,7 @@ export const CarTool = () => {
         cars,
         inAddMode, editCarId,
         setAddMode, setEditMode, resetMode,
+        loading,
         addCar, deleteCar, editCar,
         sortMode, setSortMode,
     } = useCarTool()
@@ -22,6 +23,7 @@ export const CarTool = () => {
     return (
         <div id="car-tool">
             <ToolHeader toolName="Car Tool" />
+            {loading && <h1>LOADING</h1>}
             <CarTable
                 cars={cars}
                 sortMode={sortMode}

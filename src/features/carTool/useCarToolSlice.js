@@ -1,11 +1,11 @@
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 
 import {
     setMode, resetMode, setSortMode,
-    addCar, editCar, deleteCar,
     selectSortedCars, selectEditCarId,
     selectInAddMode, selectSortMode,
-    MODE_ADD, MODE_EDIT,
+    refreshCars, appendCar, saveCar, removeCar,
+    MODE_ADD, MODE_EDIT, selectLoading,
 } from './carToolSlice'
 import { bindActionCreators } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
@@ -20,27 +20,21 @@ export const useCarToolSlice = () => {
         setAddMode,
         setEditMode,
         resetMode,
+        refreshCars,
+        addCar: appendCar,
+        deleteCar: removeCar
     }, dispatch), [dispatch])
 
     const cars = useSelector(selectSortedCars)
     const inAddMode = useSelector(selectInAddMode)
     const editCarId = useSelector(selectEditCarId)
     const sortMode = useSelector(selectSortMode)
-
-    const submitAddCar = useCallback((data) => {
-        dispatch(addCar(data))
-        dispatch(resetMode())
-    }, [dispatch])
+    const loading = useSelector(selectLoading)
 
     const submitEditCar = useCallback((data) => {
-        dispatch(editCar({ id: editCarId, data }))
+        dispatch(saveCar({ id: editCarId, ...data }))
         dispatch(resetMode())
     }, [dispatch, editCarId])
-
-    const submitDeleteCar = useCallback(id => {
-        dispatch(deleteCar(id))
-        dispatch(resetMode())
-    }, [dispatch])
 
     const submitSortMode = useCallback((field) => {
         if (field === sortMode.field) {
@@ -57,15 +51,18 @@ export const useCarToolSlice = () => {
         }
     }, [dispatch, sortMode])
 
+    useEffect(() => {
+        dispatch(refreshCars())
+    }, [dispatch])
+
     return {
         ...boundActions,
         cars,
         inAddMode,
         editCarId,
         sortMode,
-        addCar: submitAddCar,
+        loading,
         editCar: submitEditCar,
-        deleteCar: submitDeleteCar,
         setSortMode: submitSortMode,
     }
 }

@@ -1,4 +1,4 @@
-import { carRowPropType, carRowPropTypeWithActions, carTableColumnsDefType } from '../../../propTypes/car'
+import { carRowPropTypeWithActions, carTableColumnsDefType } from "../../../shared/propTypes/car"
 
 export const CarViewRow = ({
     car,

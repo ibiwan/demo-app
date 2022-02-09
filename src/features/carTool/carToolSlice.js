@@ -1,10 +1,18 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { makeid, spaceship } from "../../util";
-import { initialCars } from "./carToolConfig";
+import { spaceship } from "../../util";
+
+import { createApi } from "../../shared/services/apiData";
 
 export const MODE_ADD = 'add'
 export const MODE_EDIT = 'edit'
 export const CAR_TOOL_SLICE = 'carToolSlice'
+
+const {
+    all: _allCars,
+    append: _appendCar,
+    replace: _replaceCar,
+    remove: _removeCar,
+} = createApi('cars')
 
 const defaultMode = {
     mode: 'default',
@@ -19,7 +27,8 @@ const defaultSort = {
 const initialState = {
     ...defaultMode,
     sortMode: defaultSort,
-    cars: initialCars,
+    cars: [],
+    loading: false,
 }
 
 const carToolSlice = createSlice({
@@ -33,41 +42,38 @@ const carToolSlice = createSlice({
         setSortMode: (stateSlice, { payload: { field, dir } }) => {
             stateSlice.sortMode = { field, dir }
         },
-        addCar: (stateSlice, { payload }) => {
-            const id = makeid()
-            console.log({ id })
-            stateSlice.cars.push({
-                ...payload,
-                id: Number(makeid())
-            })
+        refreshCarsRequest: (stateSlice) => {
+            stateSlice.loading = true
         },
-        editCar: (stateSlice, { payload, payload: { id, data } }) => {
-            const i = stateSlice.cars.findIndex(car => car.id === id)
-            if (i > -1) {
-                stateSlice.cars[i] = {
-                    ...data,
-                    id,
-                }
-            }
+        refreshCarsDone: (stateSlice, { payload }) => {
+            stateSlice.cars = payload
+            stateSlice.mode = defaultMode
+            stateSlice.loading = false
         },
-        deleteCar: (stateSlice, { payload: { id } }) => {
-            const i = stateSlice.cars.findIndex(car => car.id === id)
-            if (i > -1) {
-                stateSlice.cars.splice(i, 1)
-            }
+        addCarRequest: (stateSlice) => {
+            stateSlice.loading = true
+        },
+        updateCarRequest: (stateSlice) => {
+            stateSlice.loading = true
+        },
+        deleteCarRequest: (stateSlice) => {
+            stateSlice.loading = true
         },
     },
 })
 
+const { addCarRequest, refreshCarsRequest, refreshCarsDone,
+    updateCarRequest, deleteCarRequest
+} = carToolSlice.actions
 export const {
     setMode, setSortMode, resetMode,
-    addCar, editCar, deleteCar,
 } = carToolSlice.actions
 
 const selectCars = state => state[CAR_TOOL_SLICE].cars
 export const selectInAddMode = state => state[CAR_TOOL_SLICE].mode.mode === MODE_ADD
 export const selectEditCarId = state => state[CAR_TOOL_SLICE].mode.editCarId
 export const selectSortMode = state => state[CAR_TOOL_SLICE].sortMode
+export const selectLoading = state => state[CAR_TOOL_SLICE].loading
 
 export const selectSortedCars = createSelector(
     selectCars, selectSortMode,
@@ -80,5 +86,35 @@ export const selectSortedCars = createSelector(
             dir * spaceship(c[field], d[field])
         )
     })
+
+export const refreshCars = () => async (dispatch) => {
+    dispatch(refreshCarsRequest())
+    const cars = await _allCars()
+    await new Promise(resolve=>setTimeout(resolve, 500))
+    dispatch(refreshCarsDone(cars))
+}
+
+export const appendCar = (car) => async (dispatch) => {
+    dispatch(addCarRequest(car))
+    const newCar = await _appendCar(car)
+    console.log(newCar)
+    dispatch(refreshCars())
+}
+
+export const saveCar = (car) => async (dispatch) => {
+    console.log('saveCar', car)
+    dispatch(updateCarRequest(car))
+    const newCar = await _replaceCar(car)
+    console.log(newCar)
+    dispatch(refreshCars())
+}
+
+export const removeCar = (car) => async (dispatch) => {
+    console.log(car)
+    dispatch(deleteCarRequest(car))
+    const newCar = await _removeCar(car.id)
+    console.log(newCar)
+    dispatch(refreshCars())
+}
 
 export const { reducer: carToolReducer } = carToolSlice
