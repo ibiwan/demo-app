@@ -2,12 +2,11 @@ import { Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { Home } from './components/Home'
-import { ColorTool } from './components/ColorTool'
+import { ColorTool } from './features/colorTool/components/ColorTool'
 
 import { Layout } from './components/Layout'
 
 import "./reset.css"
-import { ColorToolStoreProvider } from './contexts/colorToolStoreContext'
 import { CarToolStoreProvider } from './features/carTool/carToolStore'
 import { CalcTool } from './features/calcTool/CalcTool'
 import { store } from './store'
@@ -21,9 +20,7 @@ export const App = () => {
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='color-tool' element={
-            <ColorToolStoreProvider>
-              <ColorTool />
-            </ColorToolStoreProvider>
+            <ColorTool />
           } />
           <Route path='car-tool' element={
             <CarToolStoreProvider>

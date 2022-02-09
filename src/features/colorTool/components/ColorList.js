@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types'
+import { formatHexcode } from '../../../util'
 
 export const ColorList = ({ colors }) => {
     return (
         <ul>
             {colors.map(({ id, name, hexcode }) =>
-                <li key={id} style={{ color: `#${hexcode}` }}>
+                <li key={id} style={{
+                    color: formatHexcode(hexcode)
+                }}>
                     {name} {hexcode}
                 </li>
             )}

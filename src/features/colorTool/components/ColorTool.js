@@ -1,13 +1,10 @@
-import { useColorTool } from "../hooks/useColorTool"
-import { newIdFor } from "../util"
 import { ColorForm } from "./ColorForm"
 import { ColorList } from "./ColorList"
-import { ToolHeader } from "./ToolHeader"
+import { ToolHeader } from "../../../components/ToolHeader"
+import { useColorTool } from "../useColorTool"
 
 export const ColorTool = () => {
-    const [colors, addColorToList] = useColorTool()
-
-    const addColor = data => addColorToList({ ...data, id: newIdFor(colors) })
+    const { colors, addColor } = useColorTool()
 
     return (
         <>
